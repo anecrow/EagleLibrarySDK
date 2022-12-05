@@ -1,6 +1,7 @@
 import * as Base from "./Base";
 import * as Library from "./Library";
 import * as Folder from "./Folder";
+import * as Item from "./Item";
 
 namespace API {
   export type URLInfo = Base.APIPath;
@@ -21,5 +22,18 @@ namespace API {
   export const FolderUpdate = Folder.FolderUpdate;
   export const FolderList = Folder.FolderList;
   export const FolderListRecent = Folder.FolderListRecent;
+}
+namespace API{
+  export const ItemAddFromURL = Item.ItemAddFromURL;
+  export const ItemAddFromURLs = Item.ItemAddFromURLs;
+  export const ItemAddFromPath = Item.ItemAddFromPath;
+  export const ItemAddFromPaths = Item.ItemAddFromPaths;
+  export const ItemAddBookmark = Item.ItemAddBookmark;
+  export const ItemInfo = Item.ItemInfo;
+  export const ItemMoveToTrash = Item.ItemMoveToTrash;
+  export const ItemThumbnail = Item.ItemThumbnail;
+  export const ItemRefreshPalette = Item.ItemRefreshPalette;
+  export const ItemRefreshThumbnail = Item.ItemRefreshThumbnail;
+  export const ItemUpdate = Item.ItemUpdate;
 }
 export default API;

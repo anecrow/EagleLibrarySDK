@@ -1,10 +1,13 @@
 export type Data =
   | undefined
+  | string
   | string[]
   | ApplicationInfo
   | LibraryInfo
   | CommonFolder
-  | CommonFolder[];
+  | CommonFolder[]
+  | Item
+  | Item[];
 
 /* ---------------------
  * Application & Library
@@ -23,8 +26,8 @@ export interface LibraryInfo {
     path: string;
   };
   modificationTime: number;
-  folders: [];
-  smartFolders: [];
+  folders: CommonFolder[];
+  smartFolders: SmartFolder[];
   tagsGroups: {
     id: string;
     name: string;
@@ -48,8 +51,8 @@ interface Base {
   tags: string[];
 }
 /* ------
-   * Folder
-   ----- */
+ * Folder
+ ----- */
 interface FolderBase extends Base {
   description?: string;
   icon?: string; // TODO: icon types
@@ -160,3 +163,33 @@ export type RuleMethod =
   | "unconatin" /** 不包含 */
   | "union" /** 任一项包含 */
   | "within"; /** 在过去 */
+
+/* ----
+ * Item
+ --- */
+export interface Item extends Base {
+  btime: number;
+  mtime: number;
+  ext: string;
+  isDeleted: boolean;
+  url: string;
+  annotation: string;
+  height: number;
+  width: number;
+  lastModified: number;
+  palettes: {
+    color: number[];
+    ratio: number;
+    $$hashKey: string;
+  }[];
+}
+export type ItemListOrder =
+  | "CREATEDATE" /** 创建时间 */
+  | "FILESIZE" /** 文件大小 */
+  | "NAME" /** 名称 */
+  | "RESOLUTION" /** 分辨率 */
+  /* 反序 */
+  | "-CREATEDATE"
+  | "-FILESIZE"
+  | "-NAME"
+  | "-RESOLUTION";
