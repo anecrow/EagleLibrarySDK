@@ -1,4 +1,6 @@
 import API from "../API/index";
+import Library from "./Library";
+import { LibrarySwitch } from "./Library";
 import { ApplicationInfo } from "../API/typs";
 import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
 
@@ -22,6 +24,8 @@ export default class Eagle {
   }
 
   raw: ApplicationInfo;
+  librarySwitch?: LibrarySwitch[];
+  library?: Library;
 
   constructor(info: ApplicationInfo) {
     this.raw = info;
@@ -29,6 +33,13 @@ export default class Eagle {
 
   async updata() {
     this.raw = await API.AppInfo();
+
+    const pathes = await API.LibraryHistory();
+    this.librarySwitch = pathes.map((path) => new LibrarySwitch(path));
+
+    if (!this.library) this.library = new Library(await API.LibraryInfo());
+    else this.library.update();
+
     return this;
   }
 }
