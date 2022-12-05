@@ -8,8 +8,8 @@
   "types": "dist/types/index.d.ts",
   "type": "module",
   "scripts": {
-    "watching": "rollup -w -c rollup.config.js",
-    "build": "rollup -c rollup.config.js"
+    "watching": "npx rollup -w -c rollup.config.js",
+    "build": "npx rollup -c rollup.config.js"
   },
   "repository": {
     "type": "git",
