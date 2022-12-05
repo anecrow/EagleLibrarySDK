@@ -1,2 +1,3 @@
 import API from "./API/index";
-export { API };
+import Eagle from "./Classes/Eagle";
+export { API, Eagle };
