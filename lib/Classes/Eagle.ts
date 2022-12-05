@@ -13,6 +13,13 @@ export default class Eagle {
       return false;
     }
   }
+  static async GetActiveEagle() {
+    const check = await Eagle.CheckServer();
+    if (!check) return;
+    const appinfo = await API.AppInfo();
+    const eagle = new Eagle(appinfo);
+    return eagle.updata();
+  }
 
   raw: ApplicationInfo;
 
