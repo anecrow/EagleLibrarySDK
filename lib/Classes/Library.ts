@@ -29,6 +29,9 @@ export default class Library {
   }
 
   raw: LibraryInfo;
+  get name() {
+    return this.raw.library.name;
+  }
 
   constructor(info: LibraryInfo) {
     this.raw = info;
