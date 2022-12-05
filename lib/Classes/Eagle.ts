@@ -34,8 +34,7 @@ export default class Eagle {
   async updata() {
     this.raw = await API.AppInfo();
 
-    const pathes = await API.LibraryHistory();
-    this.librarySwitch = pathes.map((path) => new LibrarySwitch(path));
+    this.librarySwitch = await Library.GetLibrarySwitch();
 
     if (!this.library) this.library = new Library(await API.LibraryInfo());
     else this.library.update();
