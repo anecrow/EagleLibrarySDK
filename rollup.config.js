@@ -9,7 +9,7 @@ export default {
         },
         {
             file: 'dist/index.iife.js',
-            name: 'Eagle',
+            name: 'EagleSDK',
             format: 'iife',
             sourcemap: true
         },
