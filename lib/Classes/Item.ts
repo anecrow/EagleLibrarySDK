@@ -26,7 +26,8 @@ export default class Item {
   get star() {
     return this.raw.star;
   }
-  set star(star: number) {
+  set star(star: number | undefined) {
+    // BUG: 无法取消星级或置零
     this.update({ star: star });
   }
 
