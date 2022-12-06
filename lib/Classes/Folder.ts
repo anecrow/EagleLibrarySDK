@@ -1,6 +1,7 @@
 import API from "../API/index";
 import { CommonFolder } from "../API/typs";
 import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
+import Library from "./Library"; // XXX:  循环引用
 import Item from "./Item";
 
 export default class Folder {
@@ -17,6 +18,13 @@ export default class Folder {
       yield await folder.update(); // XXX: 每次额外的fetch开销
     }
   }
+  static async GetFolderWithNames(names: string[]) {
+    const library = await Library.GetActiveLibrary();
+    return [...this.Generator(library.folders)].filter((folder) =>
+      names.includes(folder.name)
+    );
+  }
+
   raw: CommonFolder;
   name: string;
   get children() {

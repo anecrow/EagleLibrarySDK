@@ -4,6 +4,17 @@ import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
 import Folder from "./Folder"; // XXX:  循环引用
 
 export default class Item {
+  static async GetItemWithFolderNames(names: string[]) {
+    const folders = await Folder.GetFolderWithNames(names);
+    console.log(folders);
+    let items: Item[] = [];
+    for (const folder of folders) {
+      const news = await folder.items;
+      console.log(news);
+    }
+    return items;
+  }
+  
   raw: ItemInfo;
   name: string;
 
