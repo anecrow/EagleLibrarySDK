@@ -18,7 +18,7 @@ export default class Folder {
     }
   }
   raw: CommonFolder;
-  name: string
+  name: string;
   get children() {
     return this.raw.children.map((info) => new Folder(info));
   }
@@ -31,7 +31,7 @@ export default class Folder {
 
   constructor(info: CommonFolder) {
     this.raw = info;
-    this.name = this.raw.name
+    this.name = this.raw.name;
   }
   *[Symbol.iterator]() {
     yield* Folder.Generator(this.children);
@@ -39,7 +39,7 @@ export default class Folder {
 
   async update() {
     this.raw = await API.FolderUpdate(this.raw.id);
-    this.name = this.raw.name
+    this.name = this.raw.name;
     return this;
   }
 }
