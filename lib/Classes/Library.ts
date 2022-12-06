@@ -1,6 +1,7 @@
 import API from "../API/index";
 import { LibraryInfo } from "../API/typs";
 import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
+import Folder from "./Folder";
 
 export class LibrarySwitch {
   raw: string;
@@ -31,6 +32,15 @@ export default class Library {
   raw: LibraryInfo;
   get name() {
     return this.raw.library.name;
+  }
+  get folders() {
+    return this.raw.folders.map((info) => new Folder(info));
+  }
+  *folder_entries() {
+    for (const folder of this.folders) {
+      yield folder;
+      yield* folder;
+    }
   }
 
   constructor(info: LibraryInfo) {
