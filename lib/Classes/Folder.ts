@@ -3,6 +3,18 @@ import { CommonFolder } from "../API/typs";
 import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
 
 export default class Folder {
+  static *Generator(folders: Folder[]): IterableIterator<Folder> {
+    for (const folder of folders) {
+      yield folder;
+      yield* folder;
+    }
+  }
+  /** 属性更详细的版本 */
+  static async *FolderALL() {
+    const infoes = await API.FolderList();
+    const folders = infoes.map((info) => new Folder(info));
+    yield* Folder.Generator(folders);
+  }
   raw: CommonFolder;
   get name() {
     return this.raw.name;
@@ -15,11 +27,7 @@ export default class Folder {
     this.raw = info;
   }
   *[Symbol.iterator]() {
-    for (const info of this.raw.children) {
-      const folder = new Folder(info);
-      yield folder;
-      yield* folder.children;
-    }
+    yield* Folder.Generator(this.children);
   }
 
   async update() {

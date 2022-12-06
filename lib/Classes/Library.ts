@@ -37,10 +37,7 @@ export default class Library {
     return this.raw.folders.map((info) => new Folder(info));
   }
   *folder_entries() {
-    for (const folder of this.folders) {
-      yield folder;
-      yield* folder;
-    }
+    yield* Folder.Generator(this.folders);
   }
 
   constructor(info: LibraryInfo) {
