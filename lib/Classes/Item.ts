@@ -68,4 +68,14 @@ export default class Item {
     this.raw = await API.ItemUpdate(this.raw.id, option);
     this.name = this.raw.name;
   }
+
+  refreshPalette() {
+    API.ItemRefreshPalette(this.raw.id);
+  }
+  refreshThumbnail() {
+    API.ItemRefreshThumbnail(this.raw.id);
+  }
+  delete() {
+    API.ItemMoveToTrash([this.raw.id]);
+  }
 }
