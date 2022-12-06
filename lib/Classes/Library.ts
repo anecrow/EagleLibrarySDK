@@ -21,6 +21,25 @@ export class LibrarySwitch {
   async switch() {
     await API.LibrarySwitch(this.raw);
   }
+  /** 等待切换完成并返回新library对象 */
+  async switchUntil(ms: number = 500) {
+    console.time("switch");
+    let current = await API.LibraryInfo();
+    if (this.raw == current.library.path)
+      throw ConsoleError("目标库与当前库一致");
+
+    this.switch();
+
+    let num = 0;
+    while (this.raw != current.library.path) {
+      num++;
+      ConsoleLog(`Waiting Switch Library to [${this.name}]`, `TRIES:${num}`);
+      current = await API.LibraryInfo();
+      await new Promise((resolve) => setTimeout(resolve, ms));
+    }
+    console.timeEnd("switch");
+    return new Library(current);
+  }
 }
 
 export default class Library {
