@@ -3,7 +3,7 @@ import { CommonFolder } from "../API/typs";
 import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
 
 export default class Folder {
-  static *Generator(folders: Folder[]): IterableIterator<Folder> {
+  static *Generator(folders: Folder[]): Generator<Folder, void, undefined> {
     for (const folder of folders) {
       yield folder;
       yield* folder;
@@ -11,9 +11,10 @@ export default class Folder {
   }
   /** 属性更详细的版本 */
   static async *FolderALL() {
-    const infoes = await API.FolderList();
-    const folders = infoes.map((info) => new Folder(info));
-    yield* Folder.Generator(folders);
+    const folders = (await API.LibraryInfo()).folders.map((i) => new Folder(i));
+    for (const folder of Folder.Generator(folders)) {
+      yield await folder.update(); // XXX: 每次额外的fetch开销
+    }
   }
   raw: CommonFolder;
   get name() {
