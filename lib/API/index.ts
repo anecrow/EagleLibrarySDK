@@ -32,6 +32,7 @@ namespace API{
   export const ItemInfo = Item.ItemInfo;
   export const ItemMoveToTrash = Item.ItemMoveToTrash;
   export const ItemThumbnail = Item.ItemThumbnail;
+  export const ItemList = Item.ItemList;
   export const ItemRefreshPalette = Item.ItemRefreshPalette;
   export const ItemRefreshThumbnail = Item.ItemRefreshThumbnail;
   export const ItemUpdate = Item.ItemUpdate;
