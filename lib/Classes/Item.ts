@@ -1,10 +1,31 @@
 import API from "../API/index";
 import { Item as ItemInfo } from "../API/typs";
 import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
+import Folder from "./Folder"; // XXX:  循环引用
 
 export default class Item {
   raw: ItemInfo;
   name: string;
+
+  get parentFolders() {
+    return (async () => {
+      const folders = [];
+      for (const id of this.raw.folders) {
+        folders.push(new Folder(await API.FolderUpdate(id)));
+      }
+      return folders;
+    })();
+  }
+  get filePath() {
+    return (async () =>
+      (await API.LibraryInfo()).library.path +
+      "\\images\\" +
+      this.raw.id +
+      ".info")();
+  }
+  get fileName() {
+    return this.raw.name + "." + this.raw.ext;
+  }
   get tags() {
     return this.raw.tags;
   }
