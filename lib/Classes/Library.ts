@@ -18,8 +18,8 @@ export class LibrarySwitch {
   }
 
   /** 切换后需要手动更新相关对象 */
-  async switch() {
-    await API.LibrarySwitch(this.raw);
+  switch() {
+    API.LibrarySwitch(this.raw);
   }
   /** 等待切换完成并返回新library对象 */
   async switchUntil(ms: number = 500) {
