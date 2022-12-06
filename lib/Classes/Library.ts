@@ -43,6 +43,9 @@ export class LibrarySwitch {
 }
 
 export default class Library {
+  static async GetActiveLibrary() {
+    return new Library(await API.LibraryInfo());
+  }
   static async GetLibrarySwitch() {
     const pathes = await API.LibraryHistory();
     return pathes.map((path) => new LibrarySwitch(path));
