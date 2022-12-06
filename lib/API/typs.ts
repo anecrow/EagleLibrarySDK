@@ -176,6 +176,7 @@ export interface Item extends Base {
   annotation: string;
   height: number;
   width: number;
+  star?: number;
   lastModified: number;
   palettes: {
     color: number[];
