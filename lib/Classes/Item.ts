@@ -14,7 +14,7 @@ export default class Item {
     }
     return items;
   }
-  
+
   raw: ItemInfo;
   name: string;
 
@@ -68,16 +68,17 @@ export default class Item {
     this.name = this.raw.name;
   }
 
-  async update(): Promise<void>;
+  async update(): Promise<Item>;
   async update(option: {
     /** 标签 */ tags?: string[];
     /** 注释 */ annotation?: string;
     /** 来源网址 */ url?: string;
     /** 评分 */ star?: number;
-  }): Promise<void>;
+  }): Promise<Item>;
   async update(option?: any) {
     this.raw = await API.ItemUpdate(this.raw.id, option);
     this.name = this.raw.name;
+    return this;
   }
 
   refreshPalette() {
