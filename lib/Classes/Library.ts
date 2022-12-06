@@ -64,6 +64,7 @@ export default class Library {
 
   async update() {
     this.raw = await API.LibraryInfo();
+    this.name = this.raw.library.name;
     return this;
   }
 }

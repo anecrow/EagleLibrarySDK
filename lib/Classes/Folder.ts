@@ -32,6 +32,7 @@ export default class Folder {
 
   async update() {
     this.raw = await API.FolderUpdate(this.raw.id);
+    this.name = this.raw.name
     return this;
   }
 }
