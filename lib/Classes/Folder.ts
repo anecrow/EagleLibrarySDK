@@ -17,15 +17,14 @@ export default class Folder {
     }
   }
   raw: CommonFolder;
-  get name() {
-    return this.raw.name;
-  }
+  name: string
   get children() {
     return this.raw.children.map((info) => new Folder(info));
   }
 
   constructor(info: CommonFolder) {
     this.raw = info;
+    this.name = this.raw.name
   }
   *[Symbol.iterator]() {
     yield* Folder.Generator(this.children);

@@ -30,9 +30,7 @@ export default class Library {
   }
 
   raw: LibraryInfo;
-  get name() {
-    return this.raw.library.name;
-  }
+  name: string;
   get folders() {
     return this.raw.folders.map((info) => new Folder(info));
   }
@@ -42,6 +40,7 @@ export default class Library {
 
   constructor(info: LibraryInfo) {
     this.raw = info;
+    this.name = this.raw.library.name;
   }
 
   async update() {
