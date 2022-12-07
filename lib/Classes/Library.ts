@@ -33,7 +33,9 @@ export class LibrarySwitch {
     let num = 0;
     while (this.raw != current.library.path) {
       num++;
-      ConsoleLog(`Waiting Switch Library to [${this.name}]`, `TRIES:${num}`);
+      ConsoleLog(`Waiting Switch Library to [${this.name}]`, {
+        flag: `TRIES:${num}`,
+      });
       current = await API.LibraryInfo();
       await new Promise((resolve) => setTimeout(resolve, ms));
     }
@@ -43,12 +45,17 @@ export class LibrarySwitch {
 }
 
 export default class Library {
+  /** // BUG: 软件重启前获取的信息不会更新 */
   static async GetActiveLibrary() {
-    return new Library(await API.LibraryInfo()); // BUG: 软件重启前获取的信息不会更新
+    return new Library(await API.LibraryInfo());
   }
   static async GetLibrarySwitch() {
     const pathes = await API.LibraryHistory();
     return pathes.map((path) => new LibrarySwitch(path));
+  }
+  static async Refresh() {
+    const info = await API.LibraryInfo();
+    API.LibrarySwitch(info.library.path);
   }
 
   raw: LibraryInfo;

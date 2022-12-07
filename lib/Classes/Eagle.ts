@@ -3,12 +3,14 @@ import Library from "./Library";
 import { LibrarySwitch } from "./Library";
 import { ApplicationInfo } from "../API/typs";
 import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
+import { homepage, version } from "../../package.json";
 
 export default class Eagle {
   static async CheckServer() {
     try {
+      ConsoleLog(homepage, { flag: version, title: "Eagle SDK" });
       const info = await API.AppInfo();
-      ConsoleLog("Eagle is online.", info.version);
+      ConsoleLog("Eagle is online.", { flag: info.version });
       return true;
     } catch (error) {
       ConsoleError("Check server failed.");
