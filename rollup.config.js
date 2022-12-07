@@ -1,4 +1,5 @@
 import typescript from 'rollup-plugin-typescript2';
+import json from '@rollup/plugin-json';
 
 export default {
     input: `lib/index.ts`,
@@ -14,7 +15,10 @@ export default {
             sourcemap: true
         },
     ],
-    plugins: [typescript({
-        useTsconfigDeclarationDir: true
-    })],
+    plugins: [
+        typescript({
+            useTsconfigDeclarationDir: true
+        }),
+        json()
+    ],
 };
