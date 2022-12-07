@@ -73,7 +73,7 @@ export function ItemAddFromURLs(
 ): Promise<undefined>;
 export function ItemAddFromURLs(items: object[], folderId?: string) {
   return fetchPOST(
-    "/api/item/addFromURL",
+    "/api/item/addFromURLs",
     Object.assign({ items: items, folderId: folderId })
   );
 }
