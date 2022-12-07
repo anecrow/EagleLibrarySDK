@@ -169,7 +169,7 @@ var EagleSDK = (function (exports) {
         return fetchPOST("/api/item/addFromURL", Object.assign(option !== null && option !== void 0 ? option : {}, { url: url, name: name }));
     }
     function ItemAddFromURLs(items, folderId) {
-        return fetchPOST("/api/item/addFromURL", Object.assign({ items: items, folderId: folderId }));
+        return fetchPOST("/api/item/addFromURLs", Object.assign({ items: items, folderId: folderId }));
     }
     function ItemAddFromPath(path, name, option) {
         return fetchPOST("/api/item/addFromPath", Object.assign(option !== null && option !== void 0 ? option : {}, { path: path, name: name }));
@@ -544,7 +544,7 @@ var EagleSDK = (function (exports) {
         }
     }
 
-    var version = "0.0.0";
+    var version = "0.0.1";
     var homepage = "https://github.com/anecrow/EagleLibrarySDK#readme";
 
     class Eagle {
