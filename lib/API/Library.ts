@@ -14,6 +14,7 @@ export function AppInfo() {
  * **取得资源库信息**
  *
  * `GET` 取得当前运行资源库的详细信息，你可以透过这个功能快速取得 所有文件夹 、所有智能文件夹 、 所有标签群组、 快速访问 等信息。
+ * // BUG: 运行中不会更新此数据, 需要重启应用
  */
 export function LibraryInfo() {
   return fetchGET("/api/library/info") as Promise<Type.LibraryInfo>;
