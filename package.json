@@ -1,7 +1,7 @@
 {
   "name": "eagle-library-sdk",
   "description": "将Eagle图片管理工具API封装为类对象SDK",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "aneCrow",
   "license": "MIT",
   "main": "dist/index.es.js",
