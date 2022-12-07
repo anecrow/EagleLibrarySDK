@@ -104,6 +104,7 @@ var EagleSDK = (function (exports) {
      * **取得资源库信息**
      *
      * `GET` 取得当前运行资源库的详细信息，你可以透过这个功能快速取得 所有文件夹 、所有智能文件夹 、 所有标签群组、 快速访问 等信息。
+     * // BUG: 运行中不会更新此数据, 需要重启应用
      */
     function LibraryInfo() {
         return fetchGET("/api/library/info");
@@ -273,18 +274,41 @@ var EagleSDK = (function (exports) {
     })(API || (API = {}));
     var API$1 = API;
 
-    const icon = (flag, color = "#fff") => [
-        `%c ${flag} %c Eagle Application %c`,
-        `background:#35495e ; padding: 0 8px; border-radius: 8px 0 0 2px;  color: ${color}`,
+    const title = "Eagle App";
+    const icon = (opt) => [
+        `%c ${opt.flag} %c ${opt.title} %c`,
+        `background:#35495e ; padding: 0 8px; border-radius: 8px 0 0 2px;  color: ${opt.color}`,
         "background:#0b77f0 ; padding: 0 8px; border-radius: 0 2px 8px 0;  color: #fff",
         "background:transparent",
     ];
-    function ConsoleLog(msg, flag = "INFO") {
-        console.log(` ${msg}\n%s`, ...icon(flag));
+    function ConsoleLog(msg, opt) {
+        var _a, _b;
+        opt !== null && opt !== void 0 ? opt : (opt = { flag: "INFO" });
+        (_a = opt.color) !== null && _a !== void 0 ? _a : (opt.color = "#fff");
+        (_b = opt.title) !== null && _b !== void 0 ? _b : (opt.title = title);
+        console.log(`${msg}\n%s`, ...icon(opt));
     }
-    function ConsoleError(msg, flag = "ERROR") {
-        console.error(`${msg}\n%s`, ...icon(flag, "#f66"));
+    function ConsoleWarn(msg, opt) {
+        var _a, _b;
+        opt !== null && opt !== void 0 ? opt : (opt = { flag: "WARN" });
+        (_a = opt.color) !== null && _a !== void 0 ? _a : (opt.color = "#ff0");
+        (_b = opt.title) !== null && _b !== void 0 ? _b : (opt.title = title);
+        console.warn(`${msg}\n%s`, ...icon(opt));
     }
+    function ConsoleError(msg, opt) {
+        var _a, _b;
+        opt !== null && opt !== void 0 ? opt : (opt = { flag: "INFO" });
+        (_a = opt.color) !== null && _a !== void 0 ? _a : (opt.color = "#f66");
+        (_b = opt.title) !== null && _b !== void 0 ? _b : (opt.title = title);
+        console.error(`${msg}\n%s`, ...icon(opt));
+    }
+
+    var Util = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        ConsoleLog: ConsoleLog,
+        ConsoleWarn: ConsoleWarn,
+        ConsoleError: ConsoleError
+    });
 
     class Item {
         static GetItemWithFolderNames(names) {
@@ -426,9 +450,13 @@ var EagleSDK = (function (exports) {
                 API$1.ItemMoveToTrash(items.map((info) => info.raw.id));
             });
         }
+        findSubFolderWithNames(name) {
+            return [...this].filter((folder) => name.includes(folder.name));
+        }
         addSubFolder(name) {
             return __awaiter(this, void 0, void 0, function* () {
-                return API$1.FolderCreate(name, this.raw.id);
+                // BUG: api建立的文件夹会让客户端ui产生不可预料的问题,推荐重启或重新载入当前库
+                return new Folder(yield API$1.FolderCreate(name, this.raw.id));
             });
         }
         ItemAddFromURLs(
@@ -467,7 +495,9 @@ var EagleSDK = (function (exports) {
                 let num = 0;
                 while (this.raw != current.library.path) {
                     num++;
-                    ConsoleLog(`Waiting Switch Library to [${this.name}]`, `TRIES:${num}`);
+                    ConsoleLog(`Waiting Switch Library to [${this.name}]`, {
+                        flag: `TRIES:${num}`,
+                    });
                     current = yield API$1.LibraryInfo();
                     yield new Promise((resolve) => setTimeout(resolve, ms));
                 }
@@ -477,15 +507,22 @@ var EagleSDK = (function (exports) {
         }
     }
     class Library {
+        /** // BUG: 软件重启前获取的信息不会更新 */
         static GetActiveLibrary() {
             return __awaiter(this, void 0, void 0, function* () {
-                return new Library(yield API$1.LibraryInfo()); // BUG: 软件重启前获取的信息不会更新
+                return new Library(yield API$1.LibraryInfo());
             });
         }
         static GetLibrarySwitch() {
             return __awaiter(this, void 0, void 0, function* () {
                 const pathes = yield API$1.LibraryHistory();
                 return pathes.map((path) => new LibrarySwitch(path));
+            });
+        }
+        static Refresh() {
+            return __awaiter(this, void 0, void 0, function* () {
+                const info = yield API$1.LibraryInfo();
+                API$1.LibrarySwitch(info.library.path);
             });
         }
         get folders() {
@@ -507,12 +544,16 @@ var EagleSDK = (function (exports) {
         }
     }
 
+    var version = "0.0.0";
+    var homepage = "https://github.com/anecrow/EagleLibrarySDK#readme";
+
     class Eagle {
         static CheckServer() {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
+                    ConsoleLog(homepage, { flag: version, title: "Eagle SDK" });
                     const info = yield API$1.AppInfo();
-                    ConsoleLog("Eagle is online.", info.version);
+                    ConsoleLog("Eagle is online.", { flag: info.version });
                     return true;
                 }
                 catch (error) {
@@ -552,6 +593,7 @@ var EagleSDK = (function (exports) {
     exports.Folder = Folder;
     exports.Item = Item;
     exports.Library = Library;
+    exports.Util = Util;
 
     return exports;
 
