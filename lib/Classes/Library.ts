@@ -33,7 +33,9 @@ export class LibrarySwitch {
     let num = 0;
     while (this.raw != current.library.path) {
       num++;
-      ConsoleLog(`Waiting Switch Library to [${this.name}]`, `TRIES:${num}`);
+      ConsoleLog(`Waiting Switch Library to [${this.name}]`, {
+        flag: `TRIES:${num}`,
+      });
       current = await API.LibraryInfo();
       await new Promise((resolve) => setTimeout(resolve, ms));
     }
