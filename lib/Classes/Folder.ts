@@ -70,7 +70,7 @@ export default class Folder {
     API.ItemMoveToTrash(items.map((info) => info.raw.id));
   }
   async addSubFolder(name: string) {
-    return API.FolderCreate(name, this.raw.id);
+    return new Folder(await API.FolderCreate(name, this.raw.id));
   }
   ItemAddFromURLs(
     /** 由多个 item 组成的 array 物件 */ items: {
