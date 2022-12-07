@@ -44,7 +44,7 @@ export class LibrarySwitch {
 
 export default class Library {
   static async GetActiveLibrary() {
-    return new Library(await API.LibraryInfo());
+    return new Library(await API.LibraryInfo()); // BUG: 软件重启前获取的信息不会更新
   }
   static async GetLibrarySwitch() {
     const pathes = await API.LibraryHistory();

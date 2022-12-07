@@ -1,7 +1,6 @@
 import API from "../API/index";
 import { CommonFolder, IconColor } from "../API/typs";
 import { ConsoleLog, ConsoleWarn, ConsoleError } from "../Util";
-import Library from "./Library"; // XXX:  循环引用
 import Item from "./Item";
 
 export default class Folder {
@@ -13,14 +12,14 @@ export default class Folder {
   }
   /** 属性更详细的版本 */
   static async *FolderALL() {
-    const folders = (await API.LibraryInfo()).folders.map((i) => new Folder(i));
+    const folders = (await API.FolderList()).map((i) => new Folder(i));
     for (const folder of Folder.Generator(folders)) {
       yield await folder.update(); // XXX: 每次额外的fetch开销
     }
   }
   static async GetFolderWithNames(names: string[]) {
-    const library = await Library.GetActiveLibrary();
-    return [...this.Generator(library.folders)].filter((folder) =>
+    const folders = (await API.FolderList()).map((i) => new Folder(i));
+    return [...this.Generator(folders)].filter((folder) =>
       names.includes(folder.name)
     );
   }
