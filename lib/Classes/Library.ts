@@ -53,6 +53,10 @@ export default class Library {
     const pathes = await API.LibraryHistory();
     return pathes.map((path) => new LibrarySwitch(path));
   }
+  static async Refresh() {
+    const info = await API.LibraryInfo();
+    API.LibrarySwitch(info.library.path);
+  }
 
   raw: LibraryInfo;
   name: string;
