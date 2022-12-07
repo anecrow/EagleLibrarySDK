@@ -69,6 +69,9 @@ export default class Folder {
     const items = await this.items;
     API.ItemMoveToTrash(items.map((info) => info.raw.id));
   }
+  findSubFolderWithNames(name: string[]) {
+    return [...this].filter((folder) => name.includes(folder.name));
+  }
   async addSubFolder(name: string) {
     // BUG: api建立的文件夹会让客户端ui产生不可预料的问题,推荐重启或重新载入当前库
     return new Folder(await API.FolderCreate(name, this.raw.id));
