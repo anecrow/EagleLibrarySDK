@@ -376,7 +376,7 @@ var EagleSDK = (function (exports) {
         /** 属性更详细的版本 */
         static FolderALL() {
             return __asyncGenerator(this, arguments, function* FolderALL_1() {
-                const folders = (yield __await(API$1.LibraryInfo())).folders.map((i) => new Folder(i));
+                const folders = (yield __await(API$1.FolderList())).map((i) => new Folder(i));
                 for (const folder of Folder.Generator(folders)) {
                     yield yield __await(yield __await(folder.update())); // XXX: 每次额外的fetch开销
                 }
@@ -384,8 +384,8 @@ var EagleSDK = (function (exports) {
         }
         static GetFolderWithNames(names) {
             return __awaiter(this, void 0, void 0, function* () {
-                const library = yield Library.GetActiveLibrary();
-                return [...this.Generator(library.folders)].filter((folder) => names.includes(folder.name));
+                const folders = (yield API$1.FolderList()).map((i) => new Folder(i));
+                return [...this.Generator(folders)].filter((folder) => names.includes(folder.name));
             });
         }
         get children() {
@@ -479,7 +479,7 @@ var EagleSDK = (function (exports) {
     class Library {
         static GetActiveLibrary() {
             return __awaiter(this, void 0, void 0, function* () {
-                return new Library(yield API$1.LibraryInfo());
+                return new Library(yield API$1.LibraryInfo()); // BUG: 软件重启前获取的信息不会更新
             });
         }
         static GetLibrarySwitch() {
