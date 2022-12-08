@@ -67,7 +67,7 @@ export default class Folder {
 
   async deleteItems() {
     const items = await this.items;
-    API.ItemMoveToTrash(items.map((info) => info.raw.id));
+    API.ItemMoveToTrash(items.map((item) => item.raw.id));
   }
   findSubFolderWithNames(name: string[]) {
     return [...this].filter((folder) => name.includes(folder.name));
