@@ -23,7 +23,7 @@ export function ConsoleWarn(msg: string, opt?: ConsoleOption) {
   console.warn(`${msg}\n%s`, ...icon(opt));
 }
 export function ConsoleError(msg: string, opt?: ConsoleOption) {
-  opt ??= { flag: "INFO" };
+  opt ??= { flag: "ERROR" };
   opt.color ??= "#f66";
   opt.title ??= title;
   console.error(`${msg}\n%s`, ...icon(opt));
