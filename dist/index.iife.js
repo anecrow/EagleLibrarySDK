@@ -297,7 +297,7 @@ var EagleSDK = (function (exports) {
     }
     function ConsoleError(msg, opt) {
         var _a, _b;
-        opt !== null && opt !== void 0 ? opt : (opt = { flag: "INFO" });
+        opt !== null && opt !== void 0 ? opt : (opt = { flag: "ERROR" });
         (_a = opt.color) !== null && _a !== void 0 ? _a : (opt.color = "#f66");
         (_b = opt.title) !== null && _b !== void 0 ? _b : (opt.title = title);
         console.error(`${msg}\n%s`, ...icon(opt));
@@ -417,7 +417,10 @@ var EagleSDK = (function (exports) {
         }
         get items() {
             return (() => __awaiter(this, void 0, void 0, function* () {
-                const infoes = yield API$1.ItemList({ folders: [this.raw.id] });
+                const infoes = yield API$1.ItemList({
+                    limit: this.getItemLimit,
+                    folders: [this.raw.id],
+                });
                 return infoes.map((info) => new Item(info));
             }))();
         }
@@ -431,6 +434,7 @@ var EagleSDK = (function (exports) {
             this.update({ newColor: newColor });
         }
         constructor(info) {
+            this.getItemLimit = 200;
             this.raw = info;
             this.name = this.raw.name;
         }
@@ -447,7 +451,7 @@ var EagleSDK = (function (exports) {
         deleteItems() {
             return __awaiter(this, void 0, void 0, function* () {
                 const items = yield this.items;
-                API$1.ItemMoveToTrash(items.map((info) => info.raw.id));
+                API$1.ItemMoveToTrash(items.map((item) => item.raw.id));
             });
         }
         findSubFolderWithNames(name) {
