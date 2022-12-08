@@ -26,12 +26,16 @@ export default class Folder {
 
   raw: CommonFolder;
   name: string;
+  getItemLimit = 200;
   get children() {
     return this.raw.children.map((info) => new Folder(info));
   }
   get items() {
     return (async () => {
-      const infoes = await API.ItemList({ folders: [this.raw.id] });
+      const infoes = await API.ItemList({
+        limit: this.getItemLimit,
+        folders: [this.raw.id],
+      });
       return infoes.map((info) => new Item(info));
     })();
   }
